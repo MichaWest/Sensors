@@ -10,43 +10,42 @@
 
 
     <LinearLayout
-            android:id = "@+id/bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@color/green"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:orientation="horizontal">
+        android:id = "@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/main__btn_list"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:src="@drawable/list_icon"
-                android:layout_weight="1"
-                android:contentDescription="Got to List page"
-                />
+        <ImageButton
+            android:id="@+id/main__btn_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:src="@drawable/list_icon"
+            android:layout_weight="1"
+            android:contentDescription="Got to List page"
+            />
 
-            <ImageButton
-                android:id="@+id/main__btn_map"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:src="@drawable/map_icon"
-                android:layout_weight="1"
-                android:contentDescription="Stay on this page"/>
+        <ImageButton
+            android:id="@+id/main__btn_map"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:src="@drawable/map_icon"
+            android:layout_weight="1"
+            android:contentDescription="Stay on this page"/>
 
-            <ImageButton
-                android:id="@+id/main__btn_account"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:src="@drawable/account_icon"
-                android:layout_weight="1"
-                android:contentDescription="Got to account page"/>
+        <ImageButton
+            android:id="@+id/main__btn_account"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:src="@drawable/account_icon"
+            android:layout_weight="1"
+            android:contentDescription="Got to account page"/>
 
-        </LinearLayout>
-
+    </LinearLayout>
 
 
     <com.yandex.mapkit.mapview.MapView
