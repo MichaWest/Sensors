@@ -36,6 +36,8 @@ android {
 
 dependencies {
     implementation("com.yandex.android:maps.mobile:4.15.0-lite")
+    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.jjoe64:graphview:4.2.2")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
