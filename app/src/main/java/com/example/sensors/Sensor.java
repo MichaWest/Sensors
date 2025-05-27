@@ -1,9 +1,12 @@
 package com.example.sensors;
 
-public class Sensor {
+import java.io.Serializable;
+
+public class Sensor implements Serializable {
     private double latitude;
     private double longitude;
     private int moisture;
+    private String name;
 
 
     public void setMoisture(int new_moisture){
@@ -31,4 +34,11 @@ public class Sensor {
     }
 
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
