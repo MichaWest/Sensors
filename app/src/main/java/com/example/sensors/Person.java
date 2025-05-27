@@ -38,4 +38,9 @@ public class Person {
     public void setMail(String mail) {
         this.mail = mail;
     }
+
+    // Получение координат устройства пользователя
+    public int[] getCoord(){
+        return null;
+    }
 }

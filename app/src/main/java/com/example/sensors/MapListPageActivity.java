@@ -1,19 +1,15 @@
 package com.example.sensors;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.hardware.SensorPrivacyManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,8 +37,22 @@ public class MapListPageActivity extends AppCompatActivity {
         loadDataFromPrefs();
 
         listOfMap = findViewById(R.id.map_list_view);
-        MyAdapter adapter = new MyAdapter(this, fields);
+        FieldAdapter adapter = new FieldAdapter(this, fields);
         listOfMap.setAdapter(adapter);
+
+        listOfMap.setOnItemClickListener((parent, view, position, id) -> {
+            // position - индекс нажатого элемента
+            // view - сам элемент списка
+            // parent - ListView
+
+            // Получаем данные элемента
+            Field item = (Field) parent.getItemAtPosition(position);
+
+            Intent intent = new Intent(MapListPageActivity.this, SensorListPageActivity.class);
+            //intent.putExtra("SensorsList", f.getSensors());
+            startActivity(intent);
+
+        });
 
         final ImageButton mapButton = findViewById(R.id.maplist__btn_map);
         mapButton.setOnClickListener(view -> {
@@ -112,15 +122,16 @@ public class MapListPageActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public class MyAdapter extends ArrayAdapter<Field>{
+    public class FieldAdapter extends ArrayAdapter<Field>{
         private List<Field> items;
         private final Context context;
 
-        public MyAdapter(@NonNull Context context, @NonNull List<Field> objects) {
+        public FieldAdapter(@NonNull Context context, @NonNull List<Field> objects) {
             super(context, 0, objects);
             this.context = context;
             this.items = objects;
         }
+
 
         @Override
         public int getCount() {
@@ -147,6 +158,7 @@ public class MapListPageActivity extends AppCompatActivity {
 
             Field f = items.get(position);
             text.setText(f.getFieldName());
+
             return convertView;
         }
     }
