@@ -14,21 +14,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/sensor_page__btn_map"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:background="@null"
-            android:src="@drawable/small_map_icon"
-
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
-
-            app:layout_constraintRight_toLeftOf="@id/sensor_page__btn_notify"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
-        <ImageButton
             android:id="@+id/sensor_page__btn_notify"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -60,251 +45,288 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/sensor_page__param_name_list"
-        android:layout_width="120dp"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:layout_constraintTop_toBottomOf="@id/up_bar"
         app:layout_constraintLeft_toLeftOf="parent"
-
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="50dp"
-
-        android:orientation="vertical">
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-
-            android:text="Moisture"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:fontFamily="@font/nunito_bold"
-            android:paddingTop="8dp"
-
-            android:paddingBottom="8dp"
-            android:text="Status"
-            android:textColor="@color/black_outline"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-
-            android:text="Last Update"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-
-            android:text="Serial number"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-
-            android:text="Depth"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-
-            android:text="Soil"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-
-            android:text="Setpoint low"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-
-            android:text="Setpoint hight"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/sensor_page__param_val_list"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginEnd="80dp"
-        android:layout_marginTop="50dp"
-
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/up_bar"
+        app:layout_constraintBottom_toTopOf="@id/sensor_page__btn_map"
 
-        android:orientation="vertical"
+        android:layout_marginTop="50dp"
         >
-
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            <LinearLayout
+                android:id="@+id/sensor_page__param_name_list"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
 
-            android:text="45%"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginEnd="10dp"
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+                android:orientation="vertical">
 
-            android:text="Normal"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+                    android:text="Moisture"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
 
-            android:text="1 hour ago"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_bold"
+                    android:paddingTop="8dp"
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Status"
+                    android:textColor="@color/black_outline"
+                    android:textSize="16dp" />
 
-            android:text="5555"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+                    android:text="Last Update"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
 
-            android:text="20 cm"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+                    android:text="Serial number"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
 
-            android:text="Land"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+                    android:text="Depth"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
 
-            android:text="18%"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
 
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+                    android:text="Soil"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
 
-            android:text="30%"
-            android:textSize="16dp"
-            android:fontFamily="@font/nunito_bold"
-            android:textColor = "@color/black_outline"
-            />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-    </LinearLayout>
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/sensor_page__graph"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:layout_constraintTop_toBottomOf="@id/sensor_page__param_name_list"    app:layout_constraintLeft_toLeftOf="parent"
+                    android:text="Setpoint low"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="Setpoint hight"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sensor_page__param_val_list"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginEnd="80dp"
+
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="45%"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="Normal"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="1 hour ago"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="5555"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="20 cm"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="Land"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="18%"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:text="30%"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:textColor = "@color/black_outline"
+                    />
+
+            </LinearLayout>
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/sensor_page__graph"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                app:layout_constraintTop_toBottomOf="@id/sensor_page__param_name_list"    app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="40dp"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+    <ImageButton
+        android:id="@+id/sensor_page__btn_map"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:background="@null"
+        android:src="@drawable/map_button"
+
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="40dp"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

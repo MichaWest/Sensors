@@ -8,6 +8,4 @@
     android:background="@color/background"
     tools:context=".SensorListPageActivity">
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
