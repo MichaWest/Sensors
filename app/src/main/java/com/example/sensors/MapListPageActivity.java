@@ -5,19 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -28,6 +33,7 @@ public class MapListPageActivity extends AppCompatActivity {
     private ArrayList<Field> fields;
     private static final String PREFS_NAME = "MapListPagePrefs";
     private static final String FIELDS_LIST_KEY = "fields_list";
+    private FieldAdapter fieldAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +43,8 @@ public class MapListPageActivity extends AppCompatActivity {
         loadDataFromPrefs();
 
         listOfMap = findViewById(R.id.map_list_view);
-        FieldAdapter adapter = new FieldAdapter(this, fields);
-        listOfMap.setAdapter(adapter);
+        fieldAdapter = new FieldAdapter(this, fields);
+        listOfMap.setAdapter(fieldAdapter);
 
         listOfMap.setOnItemClickListener((parent, view, position, id) -> {
             // position - индекс нажатого элемента
@@ -52,6 +58,13 @@ public class MapListPageActivity extends AppCompatActivity {
             //intent.putExtra("SensorsList", f.getSensors());
             startActivity(intent);
 
+        });
+        listOfMap.setOnItemLongClickListener((parent, view, position, id) -> {
+            // position - индекс нажатого элемента
+            // view - сам элемент списка
+            // parent - ListView
+            showPopupMenu(view, position, parent);
+            return true;
         });
 
         final ImageButton mapButton = findViewById(R.id.maplist__btn_map);
@@ -67,11 +80,16 @@ public class MapListPageActivity extends AppCompatActivity {
         });
 
         final ImageButton addFieldButton = findViewById(R.id.maplist__btn_add);
-        addFieldButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shoeAddItemDialog();
-            }
+        addFieldButton.setOnClickListener(view -> showAddItemDialog());
+
+        ConstraintLayout filter = findViewById(R.id.clickable_filter_icon_area);
+        filter.setOnClickListener(v -> {
+            showFilterDialog();
+        });
+
+        ConstraintLayout sort = findViewById(R.id.clickable_sort_icon_area);
+        sort.setOnClickListener(v -> {
+            showSortDialog();
         });
 
     }
@@ -82,7 +100,37 @@ public class MapListPageActivity extends AppCompatActivity {
         saveDataToPrefs();
     }
 
-    private void shoeAddItemDialog(){
+    private void showPopupMenu(View anchorView, int position, AdapterView parent) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.map_list_popup_menu, null);
+
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true // Фокус для обработки кликов
+        );
+
+        popupWindow.setElevation(10);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(true);
+
+        popupView.findViewById(R.id.delete_btn).setOnClickListener(v -> {
+            fields.remove((Field) parent.getItemAtPosition(position));
+            fieldAdapter.notifyDataSetChanged();
+            popupWindow.dismiss();
+        });
+
+        popupWindow.showAsDropDown(anchorView);
+    }
+    private void showSortDialog(){
+
+    }
+
+    private void showFilterDialog(){
+
+    }
+    private void showAddItemDialog(){
         CreateFieldDialog dialog = new CreateFieldDialog(this, new CreateFieldDialog.CustomDialogListener() {
             @Override
             public void onConfirmClicked(String name) {
@@ -122,6 +170,8 @@ public class MapListPageActivity extends AppCompatActivity {
         editor.apply();
     }
 
+
+
     public class FieldAdapter extends ArrayAdapter<Field>{
         private List<Field> items;
         private final Context context;
@@ -132,6 +182,9 @@ public class MapListPageActivity extends AppCompatActivity {
             this.items = objects;
         }
 
+        private void updateList(List<Field> f){
+            items = f;
+        }
 
         @Override
         public int getCount() {
@@ -140,7 +193,7 @@ public class MapListPageActivity extends AppCompatActivity {
 
         @Override
         public Field getItem(int i) {
-            return null;
+            return items.get(i);
         }
 
         @Override
