@@ -1,4 +1,4 @@
-package com.example.sensors;
+package com.example.sensors.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;

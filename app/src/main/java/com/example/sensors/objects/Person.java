@@ -1,4 +1,4 @@
-package com.example.sensors;
+package com.example.sensors.objects;
 
 public class Person {
     private String name;

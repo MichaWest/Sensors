@@ -1,6 +1,5 @@
 package com.example.sensors;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.sensors.objects.Sensor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +41,13 @@ public class SensorListPageActivity extends AppCompatActivity {
         sensorAdapter = new SensorAdapter(this, sensors);
         listOfSensor.setAdapter(sensorAdapter);
 
-        listOfSensor.setOnClickListener(view -> {
-            goToSensorPage();
-        });
-        listOfSensor.setOnItemLongClickListener((parent, view, position, id)  -> {
-            showPopupMenu(view, position, parent);
-            return true;
-        });
+//        listOfSensor.setOnClickListener(view -> {
+//            goToSensorPage();
+//        });
+//        listOfSensor.setOnItemLongClickListener((parent, view, position, id)  -> {
+//            showPopupMenu(view, position, parent);
+//            return true;
+//        });
 
         final ImageButton mapButton = findViewById(R.id.sensor_list_page__btn_map);
         mapButton.setOnClickListener(view -> {
