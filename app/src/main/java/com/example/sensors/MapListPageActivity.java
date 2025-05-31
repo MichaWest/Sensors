@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,52 +46,32 @@ public class MapListPageActivity extends AppCompatActivity {
         listOfMap = findViewById(R.id.map_list_view);
         fieldAdapter = new FieldAdapter(this, fields);
         listOfMap.setAdapter(fieldAdapter);
-
-        listOfMap.setOnItemClickListener((parent, view, position, id) -> {
-            // position - индекс нажатого элемента
-            // view - сам элемент списка
-            // parent - ListView
-
-            // Получаем данные элемента
-            Field item = (Field) parent.getItemAtPosition(position);
-
-            Intent intent = new Intent(MapListPageActivity.this, SensorListPageActivity.class);
-            //intent.putExtra("SensorsList", f.getSensors());
-            startActivity(intent);
-
-        });
+        // position - индекс нажатого элемента
+        // view - сам элемент списка
+        // parent - ListView
+        // Получаем данные элемента
+        listOfMap.setOnItemClickListener(this::goToSensorListPage);
         listOfMap.setOnItemLongClickListener((parent, view, position, id) -> {
             // position - индекс нажатого элемента
             // view - сам элемент списка
             // parent - ListView
-            showPopupMenu(view, position, parent);
-            return true;
+            return showPopupMenu(view, position, parent);
         });
 
         final ImageButton mapButton = findViewById(R.id.maplist__btn_map);
-        mapButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MapListPageActivity.this, MapActivity.class);
-            startActivity(intent);
-        });
+        mapButton.setOnClickListener(view -> goToMapPage());
 
         final ImageButton accountButton = findViewById(R.id.maplist__btn_account);
-        accountButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MapListPageActivity.this, AccountActivity.class);
-            startActivity(intent);
-        });
+        accountButton.setOnClickListener(view -> goToAccountPage());
 
         final ImageButton addFieldButton = findViewById(R.id.maplist__btn_add);
         addFieldButton.setOnClickListener(view -> showAddItemDialog());
 
         ConstraintLayout filter = findViewById(R.id.clickable_filter_icon_area);
-        filter.setOnClickListener(v -> {
-            showFilterDialog();
-        });
+        filter.setOnClickListener(v -> showFilterDialog());
 
         ConstraintLayout sort = findViewById(R.id.clickable_sort_icon_area);
-        sort.setOnClickListener(v -> {
-            showSortDialog();
-        });
+        sort.setOnClickListener(v -> showSortDialog());
 
     }
 
@@ -100,7 +81,7 @@ public class MapListPageActivity extends AppCompatActivity {
         saveDataToPrefs();
     }
 
-    private void showPopupMenu(View anchorView, int position, AdapterView parent) {
+    private boolean showPopupMenu(View anchorView, int position, AdapterView parent) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.map_list_popup_menu, null);
 
@@ -122,6 +103,7 @@ public class MapListPageActivity extends AppCompatActivity {
         });
 
         popupWindow.showAsDropDown(anchorView);
+        return true;
     }
     private void showSortDialog(){
 
@@ -170,8 +152,23 @@ public class MapListPageActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    private void goToAccountPage(){
+        Intent intent = new Intent(MapListPageActivity.this, AccountActivity.class);
+        startActivity(intent);
+    }
 
+    private void goToMapPage(){
+        Intent intent = new Intent(MapListPageActivity.this, MapActivity.class);
+        startActivity(intent);
+    }
 
+    private void goToSensorListPage(AdapterView parent, View view, int position, long id){
+        Field item = (Field) parent.getItemAtPosition(position);
+
+        Intent intent = new Intent(MapListPageActivity.this, SensorListPageActivity.class);
+        //intent.putExtra("SensorsList", f.getSensors());
+        startActivity(intent);
+    }
     public class FieldAdapter extends ArrayAdapter<Field>{
         private List<Field> items;
         private final Context context;
@@ -182,10 +179,6 @@ public class MapListPageActivity extends AppCompatActivity {
             this.items = objects;
         }
 
-        private void updateList(List<Field> f){
-            items = f;
-        }
-
         @Override
         public int getCount() {
             return items.size();
@@ -194,11 +187,6 @@ public class MapListPageActivity extends AppCompatActivity {
         @Override
         public Field getItem(int i) {
             return items.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
         }
 
         @NonNull
