@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.sensors.database_contracts.DatabaseHelper;
 import com.example.sensors.objects.Field;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,6 +36,7 @@ public class MapListPageActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "MapListPagePrefs";
     private static final String FIELDS_LIST_KEY = "fields_list";
     private FieldAdapter fieldAdapter;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +118,7 @@ public class MapListPageActivity extends AppCompatActivity {
         CreateFieldDialog dialog = new CreateFieldDialog(this, new CreateFieldDialog.CustomDialogListener() {
             @Override
             public void onConfirmClicked(String name) {
+                dbHelper.addField(name);
                 fields.add(new Field(name));
             }
 
