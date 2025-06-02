@@ -53,44 +53,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Методы для работы с сенсорами
     public long addSensor(String name, double latitude, double longitude,
-                          double humidity, long fieldId) {
+                          double humidity, String fieldName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_SENSOR_NAME, name);
         values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_LATITUDE, latitude);
         values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_LONGITUDE, longitude);
         values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_HUMIDITY, humidity);
-        values.put(SensorReaderContract.SensorEntry.COLUMN_FIELD_ID, fieldId);
+        values.put(SensorReaderContract.SensorEntry.COLUMN_FIELD_NAME, fieldName);
         return db.insert(SensorReaderContract.SensorEntry.TABLE_NAME, null, values);
     }
 
-    public Cursor getSensorsForField(long fieldId) {
+    public Cursor getSensorsForField(String fieldName) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(
                 SensorReaderContract.SensorEntry.TABLE_NAME,
                 null,
-                SensorReaderContract.SensorEntry.COLUMN_FIELD_ID + "=?",
-                new String[]{String.valueOf(fieldId)},
+                SensorReaderContract.SensorEntry.COLUMN_FIELD_NAME + "=?",
+                new String[]{String.valueOf(fieldName)},
                 null,
                 null,
                 null
         );
     }
 
-    public Cursor getFieldWithSensors(long fieldId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT f." + FieldReaderContract.FieldEntry._ID +
-                ", f." + FieldReaderContract.FieldEntry.COLUMN_NAME_FIELD_NAME +
-                ", s." + SensorReaderContract.SensorEntry._ID + " as sensor_id" +
-                ", s." + SensorReaderContract.SensorEntry.COLUMN_NAME_SENSOR_NAME + " as sensor_name" +
-                ", s." + SensorReaderContract.SensorEntry.COLUMN_NAME_LATITUDE +
-                ", s." + SensorReaderContract.SensorEntry.COLUMN_NAME_LONGITUDE +
-                ", s." + SensorReaderContract.SensorEntry.COLUMN_NAME_HUMIDITY +
-                " FROM " + FieldReaderContract.FieldEntry.TABLE_NAME + " f" +
-                " LEFT JOIN " + SensorReaderContract.SensorEntry.TABLE_NAME + " s" +
-                " ON f." + FieldReaderContract.FieldEntry._ID +
-                " = s." + SensorReaderContract.SensorEntry.COLUMN_FIELD_ID +
-                " WHERE f." + FieldReaderContract.FieldEntry._ID + " = ?";
-        return db.rawQuery(query, new String[]{String.valueOf(fieldId)});
-    }
 }

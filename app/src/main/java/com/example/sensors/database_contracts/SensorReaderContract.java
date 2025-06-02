@@ -13,7 +13,7 @@ public class SensorReaderContract {
         public static final String COLUMN_NAME_LONGITUDE = "longitude";
         public static final String COLUMN_NAME_LATITUDE = "latitude";
         public static final String COLUMN_NAME_HUMIDITY = "humidity";
-        public static final String COLUMN_FIELD_ID = "field_id";
+        public static final String COLUMN_FIELD_NAME = "field_id";
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + SensorEntry.TABLE_NAME + " (" +
@@ -21,6 +21,7 @@ public class SensorReaderContract {
                         SensorEntry.COLUMN_NAME_SENSOR_NAME + " TEXT," +
                         SensorEntry.COLUMN_NAME_LONGITUDE + " TEXT," +
                         SensorEntry.COLUMN_NAME_LATITUDE + " TEXT," +
+                        SensorEntry.COLUMN_FIELD_NAME + " TEXT," +
                         SensorEntry.COLUMN_NAME_HUMIDITY + " TEXT)";
 
         public static final String SQL_DELETE_TABLE =
