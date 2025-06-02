@@ -169,7 +169,7 @@ public class MapListPageActivity extends AppCompatActivity {
         Field item = (Field) parent.getItemAtPosition(position);
 
         Intent intent = new Intent(MapListPageActivity.this, SensorListPageActivity.class);
-        //intent.putExtra("SensorsList", f.getSensors());
+        intent.putExtra("Field name", item.getFieldName());
         startActivity(intent);
     }
     public class FieldAdapter extends ArrayAdapter<Field>{
