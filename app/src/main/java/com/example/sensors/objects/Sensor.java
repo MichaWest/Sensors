@@ -5,12 +5,13 @@ import java.io.Serializable;
 public class Sensor implements Serializable {
     private double latitude;
     private double longitude;
-    private int moisture;
+    private int humidity;
     private String name;
+    private long fieldId;
 
 
-    public void setMoisture(int new_moisture){
-        this.moisture = new_moisture;
+    public void setHumidity(int new_humidity){
+        this.humidity = new_humidity;
     }
 
     public void setLatitude(double new_latitude){
@@ -29,8 +30,8 @@ public class Sensor implements Serializable {
         return longitude;
     }
 
-    public int getMoisture(){
-        return moisture;
+    public int getHumidity(){
+        return humidity;
     }
 
 
@@ -40,5 +41,13 @@ public class Sensor implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(long fieldId) {
+        this.fieldId = fieldId;
     }
 }
