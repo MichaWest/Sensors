@@ -3,7 +3,6 @@ package com.example.sensors;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,7 +20,6 @@ import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
 
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 
 public class MapActivity extends AppCompatActivity {

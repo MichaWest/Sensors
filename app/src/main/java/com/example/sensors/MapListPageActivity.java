@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +20,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.sensors.database_contracts.DatabaseHelper;
+import com.example.sensors.database_contracts.FieldReaderContract;
 import com.example.sensors.objects.Field;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +37,16 @@ public class MapListPageActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "MapListPagePrefs";
     private static final String FIELDS_LIST_KEY = "fields_list";
     private FieldAdapter fieldAdapter;
-    private DatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_list_page);
 
-        loadDataFromPrefs();
+        dbHelper = new DatabaseHelper(this);
+
+        fields = getAllField();
 
         listOfMap = findViewById(R.id.map_list_view);
         fieldAdapter = new FieldAdapter(this, fields);
@@ -80,7 +83,12 @@ public class MapListPageActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        saveDataToPrefs();
+    }
+
+    @Override
+    protected void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
     }
 
     private boolean showPopupMenu(View anchorView, int position, AdapterView parent) {
@@ -99,7 +107,9 @@ public class MapListPageActivity extends AppCompatActivity {
         popupWindow.setOutsideTouchable(true);
 
         popupView.findViewById(R.id.delete_btn).setOnClickListener(v -> {
-            fields.remove((Field) parent.getItemAtPosition(position));
+            Field field = (Field) parent.getItemAtPosition(position);
+            fields.remove(field);
+            dbHelper.deleteField(field.getFieldName());
             fieldAdapter.notifyDataSetChanged();
             popupWindow.dismiss();
         });
@@ -117,9 +127,12 @@ public class MapListPageActivity extends AppCompatActivity {
     private void showAddItemDialog(){
         CreateFieldDialog dialog = new CreateFieldDialog(this, new CreateFieldDialog.CustomDialogListener() {
             @Override
-            public void onConfirmClicked(String name) {
-                dbHelper.addField(name);
-                fields.add(new Field(name));
+            public void onConfirmClicked(String name, String filedCulture, String nameSoilType) {
+                long res = dbHelper.addField(name, filedCulture, nameSoilType);
+                Field newField = new Field(name);
+                newField.setCultureOfCultivation(filedCulture);
+                newField.setTypeOfSoil(nameSoilType);
+                fields.add(newField);
             }
 
             @Override
@@ -131,28 +144,35 @@ public class MapListPageActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void loadDataFromPrefs(){
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString(FIELDS_LIST_KEY, null);
+    private ArrayList<Field> getAllField() {
+        ArrayList<Field> fields = new ArrayList<>();
 
-        Type type = new TypeToken<ArrayList<Field>>() {}.getType();
-        fields = gson.fromJson(json, type);
+        // 1. Сначала получаем все поля
+        Cursor fieldCursor = dbHelper.getAllFields();
 
-        if(fields == null){
-            fields = new ArrayList<>();
+        if (fieldCursor != null && fieldCursor.moveToFirst()) {
+            int fieldNameIndex = fieldCursor.getColumnIndex(FieldReaderContract.FieldEntry.COLUMN_NAME_FIELD_NAME);
+            int fieldCultureIndex = fieldCursor.getColumnIndex(FieldReaderContract.FieldEntry.COLUMN_NAME_CULTURE_OF_CULTIVATION);
+            int fieldTypeOfSoilIndex = fieldCursor.getColumnIndex(FieldReaderContract.FieldEntry.COLUMN_NAME_TYPE_OF_SOIL);
+
+            do {
+                // 2. Для каждого поля создаем объект Field
+                String fieldName = fieldCursor.getString(fieldNameIndex);
+                String cultureType = fieldCursor.getString(fieldCultureIndex);
+                String typeOfSoil = fieldCursor.getString(fieldTypeOfSoilIndex);
+
+                Field field = new Field(fieldName);
+                field.setCultureOfCultivation(cultureType);
+                field.setTypeOfSoil(typeOfSoil);
+
+                // 3. Добавляем поле в результирующий список
+                fields.add(field);
+            } while (fieldCursor.moveToNext());
+
+            fieldCursor.close();
         }
-    }
 
-    private void saveDataToPrefs(){
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        Gson gson = new Gson();
-        String json = gson.toJson(fields);
-
-        editor.putString(FIELDS_LIST_KEY, json);
-        editor.apply();
+        return fields;
     }
 
     private void goToAccountPage(){
@@ -198,10 +218,13 @@ public class MapListPageActivity extends AppCompatActivity {
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.map_content, parent, false);
             convertView.setBackgroundColor(Color.TRANSPARENT);
-            TextView text = convertView.findViewById(R.id.field_name);
+
+            TextView textFieldName = convertView.findViewById(R.id.field_name);
+            TextView textInfo = convertView.findViewById(R.id.field_info);
 
             Field f = items.get(position);
-            text.setText(f.getFieldName());
+            textFieldName.setText(f.getFieldName());
+            textInfo.setText(f.getCultureOfCultivation()+", "+f.getTypeOfSoil());
 
             return convertView;
         }

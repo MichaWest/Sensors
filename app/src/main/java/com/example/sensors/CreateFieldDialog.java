@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 public class CreateFieldDialog extends Dialog {
 
     public interface CustomDialogListener {
-        void onConfirmClicked(String name);
+        void onConfirmClicked(String name, String filedCulture, String nameSoilType);
         void onCancelClicked();
 
     }
@@ -30,6 +30,8 @@ public class CreateFieldDialog extends Dialog {
         setContentView(R.layout.add_map_dialog);
 
         EditText fieldName = findViewById(R.id.input_field_name);
+        EditText fieldCulture = findViewById(R.id.input_culture);
+        EditText fieldSoilType = findViewById(R.id.input_soil_type);
 
         ImageButton btnCancel = findViewById(R.id.cancel_button);
         ImageButton btnConfirm = findViewById(R.id.ok_button);
@@ -44,7 +46,9 @@ public class CreateFieldDialog extends Dialog {
         btnConfirm.setOnClickListener(view -> {
             if(listener != null){
                 String name = fieldName.getText().toString();
-                listener.onConfirmClicked(name);
+                String culture = fieldCulture.getText().toString();
+                String soilType = fieldSoilType.getText().toString();
+                listener.onConfirmClicked(name, culture, soilType);
             }
             dismiss();
         });

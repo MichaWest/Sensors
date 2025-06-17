@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "ITMO_sensor.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "ITMO_sensors_project.db";
+    private static final int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(FieldReaderContract.FieldEntry.SQL_CREATE_TABLE);
-        db.execSQL(SensorReaderContract.SensorEntry.SQL_CREATE_TABLE);
+        //db.execSQL(SensorReaderContract.SensorEntry.SQL_CREATE_TABLE);
     }
 
     @Override
@@ -30,19 +30,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Методя для работы с полями
-    public long addField(String name){
+    // Метод для работы с полями
+   public long addField(String name, String culture, String soil_type){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
         values.put(FieldReaderContract.FieldEntry.COLUMN_NAME_FIELD_NAME, name);
+        values.put(FieldReaderContract.FieldEntry.COLUMN_NAME_CULTURE_OF_CULTIVATION, culture);
+        values.put(FieldReaderContract.FieldEntry.COLUMN_NAME_TYPE_OF_SOIL, soil_type);
+
         return db.insert(FieldReaderContract.FieldEntry.TABLE_NAME, null, values);
+    }
+
+    public long deleteField(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(
+                FieldReaderContract.FieldEntry.TABLE_NAME,
+                FieldReaderContract.FieldEntry.COLUMN_NAME_FIELD_NAME + " = ?",
+                new String[]{name}
+        );
     }
 
     public Cursor getAllFields() {
         SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                FieldReaderContract.FieldEntry.COLUMN_NAME_FIELD_NAME,
+                FieldReaderContract.FieldEntry.COLUMN_NAME_TYPE_OF_SOIL,
+                FieldReaderContract.FieldEntry.COLUMN_NAME_CULTURE_OF_CULTIVATION
+        };
+
+
         return db.query(
                 FieldReaderContract.FieldEntry.TABLE_NAME,
-                null,
+                columns,
                 null,
                 null,
                 null,
@@ -50,6 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null
         );
     }
+
+
 
     // Методы для работы с сенсорами
     public long addSensor(String name, double latitude, double longitude,

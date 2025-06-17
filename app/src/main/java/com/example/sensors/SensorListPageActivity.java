@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.sensors.database_contracts.DatabaseHelper;
 import com.example.sensors.objects.Sensor;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class SensorListPageActivity extends AppCompatActivity {
     private ArrayList<Sensor> sensors;
     private ListView listOfSensor;
     private SensorAdapter sensorAdapter;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -155,7 +157,7 @@ public class SensorListPageActivity extends AppCompatActivity {
             name.setText(s.getName());
 
             TextView humidity = convertView.findViewById(R.id.humidity_info);
-            humidity.setText(s.getMoisture() +" %");
+            humidity.setText(s.getHumidity() +" %");
 
             return convertView;
         }

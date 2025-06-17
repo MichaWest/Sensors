@@ -7,4 +7,5 @@
     <color name="background">#CADEDE</color>
     <color name="ash_gray">#9FB8B8</color>
     <color name="light_outline">#FEFAE0</color>
+    <color name="hint_text">#839898</color>
 </resources>
