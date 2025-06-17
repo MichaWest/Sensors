@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ITMO_sensors_project.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(FieldReaderContract.FieldEntry.SQL_CREATE_TABLE);
-        //db.execSQL(SensorReaderContract.SensorEntry.SQL_CREATE_TABLE);
+        db.execSQL(SensorReaderContract.SensorEntry.SQL_CREATE_TABLE);
     }
 
     @Override
@@ -103,11 +103,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 SensorReaderContract.SensorEntry.COLUMN_NAME_FIELD_NAME
         };
 
+        String[] selectionArgs = {fieldName};
+
         return db.query(
                 SensorReaderContract.SensorEntry.TABLE_NAME,
                 columns,
                 SensorReaderContract.SensorEntry.COLUMN_NAME_FIELD_NAME + "=?",
-                new String[]{String.valueOf(fieldName)},
+                selectionArgs,
                 null,
                 null,
                 null

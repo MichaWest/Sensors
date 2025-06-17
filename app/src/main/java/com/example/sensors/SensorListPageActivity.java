@@ -2,6 +2,7 @@ package com.example.sensors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.sensors.database_contracts.DatabaseHelper;
+import com.example.sensors.database_contracts.SensorReaderContract;
 import com.example.sensors.objects.Field;
 import com.example.sensors.objects.Sensor;
 
@@ -33,14 +35,19 @@ public class SensorListPageActivity extends AppCompatActivity {
     private SensorAdapter sensorAdapter;
     private DatabaseHelper dbHelper;
 
+    private String fieldName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sensor_list_page);
 
+        Bundle arguments = getIntent().getExtras();
+        fieldName = arguments.get("Field name").toString();
+
         dbHelper = new DatabaseHelper(this);
 
-        sensors = new ArrayList<>();
+        sensors = getAllSensor();
 
         listOfSensor = findViewById(R.id.sensor_list_view);
         sensorAdapter = new SensorAdapter(this, sensors);
@@ -66,7 +73,7 @@ public class SensorListPageActivity extends AppCompatActivity {
         notifyButton.setOnClickListener(view -> {});
 
         final ImageButton addSensorButton = findViewById(R.id.sensor_list__btn_add);
-        addSensorButton.setOnClickListener(view -> {});
+        addSensorButton.setOnClickListener(view -> showAddItemDialog());
 
         ConstraintLayout filter = findViewById(R.id.clickable_filter_icon_area);
         filter.setOnClickListener(v -> {
@@ -88,11 +95,30 @@ public class SensorListPageActivity extends AppCompatActivity {
 
     }
 
+    private ArrayList<Sensor> getAllSensor(){
+        ArrayList<Sensor> sensors = new ArrayList<>();
+
+        Cursor sensorCursor = dbHelper.getSensorsForField(fieldName);
+
+        if (sensorCursor != null && sensorCursor.moveToFirst()){
+            int sensorSerialIndex = sensorCursor.getColumnIndex(SensorReaderContract.SensorEntry.COLUMN_NAME_SERIAL_NUMBER);
+            do{
+                String serialNumber = sensorCursor.getString(sensorSerialIndex);
+                Sensor sensor = new Sensor(serialNumber);
+                sensors.add(sensor);
+            }while (sensorCursor.moveToNext());
+
+            sensorCursor.close();
+        }
+
+        return sensors;
+    }
+
     private void showAddItemDialog(){
         CreateSensorDialog dialog = new CreateSensorDialog(this, new CreateSensorDialog.CustomDialogListener() {
             @Override
             public void onConfirmClicked(String serialNumber, double latitude, double longitude) {
-                long res = dbHelper.addSensor(serialNumber, latitude, longitude, true, 0, 0, 0, null);
+                long res = dbHelper.addSensor(serialNumber, latitude, longitude, true, 0, 0, 0, fieldName);
                 Sensor newSensor = new Sensor(serialNumber);
                 newSensor.setLatitude(latitude);
                 newSensor.setLongitude(longitude);
