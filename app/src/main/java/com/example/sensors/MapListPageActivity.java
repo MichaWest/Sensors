@@ -3,12 +3,10 @@ package com.example.sensors;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.example.sensors.database_contracts.DatabaseHelper;
 import com.example.sensors.database_contracts.FieldReaderContract;
 import com.example.sensors.objects.Field;
-import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,8 +31,6 @@ import java.util.List;
 public class MapListPageActivity extends AppCompatActivity {
     private ListView listOfMap;
     private ArrayList<Field> fields;
-    private static final String PREFS_NAME = "MapListPagePrefs";
-    private static final String FIELDS_LIST_KEY = "fields_list";
     private FieldAdapter fieldAdapter;
     private DatabaseHelper dbHelper;;
 
@@ -60,7 +55,7 @@ public class MapListPageActivity extends AppCompatActivity {
             // position - индекс нажатого элемента
             // view - сам элемент списка
             // parent - ListView
-            return showPopupMenu(view, position, parent);
+            return showDeleteMenu(view, position, parent);
         });
 
         final ImageButton mapButton = findViewById(R.id.maplist__btn_map);
@@ -91,7 +86,7 @@ public class MapListPageActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private boolean showPopupMenu(View anchorView, int position, AdapterView parent) {
+    private boolean showDeleteMenu(View anchorView, int position, AdapterView parent) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.map_list_popup_menu, null);
 
