@@ -25,6 +25,9 @@
             android:name=".AccountActivity"
             android:exported="false" />
         <activity
+            android:name=".GetCoordinatesFieldActivity"
+            android:exported="false" />
+        <activity
             android:name=".MapActivity"
             android:exported="true"
             android:theme="@style/Theme.Sensors">
