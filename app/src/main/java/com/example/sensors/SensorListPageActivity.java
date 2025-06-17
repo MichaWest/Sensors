@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.sensors.database_contracts.DatabaseHelper;
+import com.example.sensors.objects.Field;
 import com.example.sensors.objects.Sensor;
 
 import java.util.ArrayList;
@@ -37,19 +38,19 @@ public class SensorListPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sensor_list_page);
 
+        dbHelper = new DatabaseHelper(this);
+
         sensors = new ArrayList<>();
 
         listOfSensor = findViewById(R.id.sensor_list_view);
         sensorAdapter = new SensorAdapter(this, sensors);
         listOfSensor.setAdapter(sensorAdapter);
 
-//        listOfSensor.setOnClickListener(view -> {
-//            goToSensorPage();
-//        });
-//        listOfSensor.setOnItemLongClickListener((parent, view, position, id)  -> {
-//            showPopupMenu(view, position, parent);
-//            return true;
-//        });
+        listOfSensor.setOnItemClickListener(this::goToSensorPage);
+        listOfSensor.setOnItemLongClickListener((parent, view, position, id)  -> {
+            showDeleteMenu(view, position, parent);
+            return true;
+        });
 
         final ImageButton mapButton = findViewById(R.id.sensor_list_page__btn_map);
         mapButton.setOnClickListener(view -> {
@@ -87,6 +88,26 @@ public class SensorListPageActivity extends AppCompatActivity {
 
     }
 
+    private void showAddItemDialog(){
+        CreateSensorDialog dialog = new CreateSensorDialog(this, new CreateSensorDialog.CustomDialogListener() {
+            @Override
+            public void onConfirmClicked(String serialNumber, double latitude, double longitude) {
+                long res = dbHelper.addSensor(serialNumber, latitude, longitude, true, 0, 0, 0, null);
+                Sensor newSensor = new Sensor(serialNumber);
+                newSensor.setLatitude(latitude);
+                newSensor.setLongitude(longitude);
+                sensors.add(newSensor);
+            }
+
+            @Override
+            public void onCancelClicked() {
+                // На будущее
+            }
+        });
+
+        dialog.show();
+    }
+
     private void goToMapPage(){
         Intent intent = new Intent(SensorListPageActivity.this, MapActivity.class);
         startActivity(intent);
@@ -97,12 +118,12 @@ public class SensorListPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToSensorPage(){
-        //Intent intent = new Intent(SensorListPageActivity.this, Sensor.class);
-        //startActivity(intent);
+    private void goToSensorPage(AdapterView parent, View view, int position, long id){
+        Intent intent = new Intent(SensorListPageActivity.this, Sensor.class);
+        startActivity(intent);
     }
 
-    private void showPopupMenu(View anchorView, int position, AdapterView parent) {
+    private void showDeleteMenu(View anchorView, int position, AdapterView parent) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.map_list_popup_menu, null);
 
@@ -153,8 +174,8 @@ public class SensorListPageActivity extends AppCompatActivity {
 
             Sensor s = items.get(position);
 
-            TextView name = convertView.findViewById(R.id.sensor_name);
-            name.setText(s.getName());
+            TextView textSerialNumber = convertView.findViewById(R.id.sensor_name);
+            textSerialNumber.setText(s.getSerialNumber());
 
             TextView humidity = convertView.findViewById(R.id.humidity_info);
             humidity.setText(s.getHumidity() +" %");

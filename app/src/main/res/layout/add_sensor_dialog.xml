@@ -7,12 +7,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/map_dialog__title"
+        android:id="@+id/sensor_dialog__title"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:text="Новое поле"
+        android:text="Новый сенсор"
         android:textSize="20dp"
         android:gravity="center"
         android:fontFamily="@font/nunito_bold"
@@ -25,12 +25,12 @@
         android:paddingBottom="22dp"/>
 
     <EditText
-        android:id="@+id/input_field_name"
+        android:id="@+id/input_sensor_serial_number"
 
         android:layout_width="332dp"
         android:layout_height="40dp"
 
-        android:hint="Имя"
+        android:hint="Серийный номер"
         android:fontFamily="@font/nunito_light"
         android:textSize="14dp"
         android:textColorHint="@color/hint_text"
@@ -38,57 +38,53 @@
         android:background="@drawable/input_background"
 
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/map_dialog__title"
+        app:layout_constraintTop_toBottomOf="@id/sensor_dialog__title"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/input_culture"
+        app:layout_constraintBottom_toTopOf="@id/cord_text"
 
         android:layout_marginBottom="16dp"
+
         android:paddingStart="8dp"
         android:paddingEnd="8dp" />
 
-    <EditText
-        android:id="@+id/input_culture"
+    <TextView
+        android:id="@+id/cord_text"
 
-        android:layout_width="332dp"
+        android:layout_width="280dp"
         android:layout_height="40dp"
 
-        android:hint="Культура выращивания"
+        android:text="59.926557, 30.336916"
         android:fontFamily="@font/nunito_light"
         android:textSize="14dp"
-        android:textColorHint="@color/hint_text"
         android:textColor="@color/black_outline"
         android:background="@drawable/input_background"
 
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_field_name"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/input_soil_type"
-
-        android:layout_marginBottom="16dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp" />
-
-    <EditText
-        android:id="@+id/input_soil_type"
-
-        android:layout_width="332dp"
-        android:layout_height="40dp"
-
-        android:hint="Тип грунта"
-        android:fontFamily="@font/nunito_light"
-        android:textSize="14dp"
-        android:textColorHint="@color/hint_text"
-        android:textColor="@color/black_outline"
-        android:background="@drawable/input_background"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_culture"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_sensor_serial_number"
         app:layout_constraintBottom_toTopOf="@id/cancel_button"
 
         android:layout_marginBottom="16dp"
+        android:layout_marginStart="14dp"
+
         android:paddingStart="8dp"
-        android:paddingEnd="8dp" />
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
+
+
+    <ImageButton
+        android:id="@+id/get_cord_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="12dp"
+
+        android:background="@drawable/get_cord_button"
+
+        app:layout_constraintBottom_toTopOf="@id/cancel_button"
+        app:layout_constraintLeft_toRightOf="@id/cord_text"
+        app:layout_constraintTop_toBottomOf="@id/input_sensor_serial_number"
+        ></ImageButton>
 
     <ImageButton
         android:id="@+id/cancel_button"

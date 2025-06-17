@@ -74,24 +74,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Методы для работы с сенсорами
-    public long addSensor(String name, double latitude, double longitude,
-                          double humidity, String fieldName) {
+    public long addSensor(String serialNumber, double latitude, double longitude,
+                          boolean status, int charge, int humidity, double temperature, String fieldName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_SENSOR_NAME, name);
+        values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_SERIAL_NUMBER, serialNumber);
         values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_LATITUDE, latitude);
         values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_LONGITUDE, longitude);
+        values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_STATUS, status);
+        values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_CHARGE, charge);
         values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_HUMIDITY, humidity);
-        values.put(SensorReaderContract.SensorEntry.COLUMN_FIELD_NAME, fieldName);
+        values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_TEMPERATURE, temperature);
+        values.put(SensorReaderContract.SensorEntry.COLUMN_NAME_FIELD_NAME, fieldName);
         return db.insert(SensorReaderContract.SensorEntry.TABLE_NAME, null, values);
     }
 
     public Cursor getSensorsForField(String fieldName) {
         SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] columns = {
+                SensorReaderContract.SensorEntry.COLUMN_NAME_SERIAL_NUMBER,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_LATITUDE,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_LATITUDE,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_STATUS,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_CHARGE,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_HUMIDITY,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_TEMPERATURE,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_FIELD_NAME
+        };
+
         return db.query(
                 SensorReaderContract.SensorEntry.TABLE_NAME,
-                null,
-                SensorReaderContract.SensorEntry.COLUMN_FIELD_NAME + "=?",
+                columns,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_FIELD_NAME + "=?",
                 new String[]{String.valueOf(fieldName)},
                 null,
                 null,

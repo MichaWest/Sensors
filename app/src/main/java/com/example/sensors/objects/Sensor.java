@@ -3,17 +3,22 @@ package com.example.sensors.objects;
 import java.io.Serializable;
 
 public class Sensor implements Serializable {
+    private final String serialNumber;
     private double latitude;
     private double longitude;
-    private int humidity;
-    private String name;
-    private long fieldId;
+    private boolean status;
+    private int charge;
+    private int humidity = 80;
+    private double temperature;
+    private String fieldName;
 
-
-    public void setHumidity(int new_humidity){
-        this.humidity = new_humidity;
+    public Sensor(String serialNumber){
+        this.serialNumber = serialNumber;
     }
 
+    public String getSerialNumber(){
+        return serialNumber;
+    }
     public void setLatitude(double new_latitude){
         this.latitude = new_latitude;
     }
@@ -30,24 +35,31 @@ public class Sensor implements Serializable {
         return longitude;
     }
 
+    public boolean getStatus() {
+        return status;
+    }
+
+    public int getCharge() {
+        return charge;
+    }
+
     public int getHumidity(){
         return humidity;
     }
 
-
-    public String getName() {
-        return name;
+    public double getTemperature() {
+        return temperature;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public long getFieldId() {
-        return fieldId;
+    public void setFieldId(String fieldId) {
+        this.fieldName = fieldName;
     }
 
-    public void setFieldId(long fieldId) {
-        this.fieldId = fieldId;
-    }
+
+
+
 }
