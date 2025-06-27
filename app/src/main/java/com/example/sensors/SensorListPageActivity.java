@@ -35,6 +35,8 @@ public class SensorListPageActivity extends AppCompatActivity {
     private SensorAdapter sensorAdapter;
     private DatabaseHelper dbHelper;
 
+    private CreateSensorDialog addItemDialog;
+
     private String fieldName;
 
     @Override
@@ -115,7 +117,7 @@ public class SensorListPageActivity extends AppCompatActivity {
     }
 
     private void showAddItemDialog(){
-        CreateSensorDialog dialog = new CreateSensorDialog(this, new CreateSensorDialog.CustomDialogListener() {
+        addItemDialog = new CreateSensorDialog(this, new CreateSensorDialog.CustomDialogListener() {
             @Override
             public void onConfirmClicked(String serialNumber, double latitude, double longitude) {
                 long res = dbHelper.addSensor(serialNumber, latitude, longitude, true, 0, 0, 0, fieldName);
@@ -131,7 +133,7 @@ public class SensorListPageActivity extends AppCompatActivity {
             }
         });
 
-        dialog.show();
+        addItemDialog.show();
     }
 
     private void goToMapPage(){
@@ -173,6 +175,16 @@ public class SensorListPageActivity extends AppCompatActivity {
         popupWindow.showAsDropDown(anchorView);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Передаем результат в диалог, если он открыт
+        if (addItemDialog != null && addItemDialog.isShowing()) {
+            addItemDialog.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
     public class SensorAdapter extends ArrayAdapter<Sensor>{
         private List<Sensor> items;
         private final Context context;
@@ -209,4 +221,6 @@ public class SensorListPageActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
+
 }

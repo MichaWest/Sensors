@@ -1,12 +1,19 @@
 package com.example.sensors;
 
+import static android.app.PendingIntent.getActivity;
+
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 public class CreateSensorDialog extends Dialog {
 
@@ -16,9 +23,14 @@ public class CreateSensorDialog extends Dialog {
     }
 
     private CreateSensorDialog.CustomDialogListener listener;
+    private static final int REQUEST_MAP = 1001;
+    private Activity hostActivity;
+    private double selectedLat = 0;
+    private double selectedLng = 0;
 
-    public CreateSensorDialog(Context context, CreateSensorDialog.CustomDialogListener listener) {
+    public CreateSensorDialog(Activity context, CreateSensorDialog.CustomDialogListener listener) {
         super(context);
+        this.hostActivity = context;
         this.listener = listener;
     }
 
@@ -48,5 +60,24 @@ public class CreateSensorDialog extends Dialog {
             }
             dismiss();
         });
+
+        getCordBtn.setOnClickListener(v -> {
+            Intent mapIntent = new Intent(getContext(), GetCoordinatesFieldActivity.class);
+            hostActivity.startActivityForResult(mapIntent, REQUEST_MAP);
+        });
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_MAP && resultCode == Activity.RESULT_OK){
+            selectedLat = data.getDoubleExtra("latitude", 0);
+            selectedLng = data.getDoubleExtra("longitude", 0);
+
+            DecimalFormat decimalFormat = new DecimalFormat("#.######");
+            String res = decimalFormat.format(selectedLat)+", "+decimalFormat.format(selectedLng);
+
+            TextView cordText = findViewById(R.id.cord_text);
+            cordText.setText(res);
+        }
     }
 }
