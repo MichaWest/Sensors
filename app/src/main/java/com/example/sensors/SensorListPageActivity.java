@@ -167,7 +167,9 @@ public class SensorListPageActivity extends AppCompatActivity {
         popupWindow.setOutsideTouchable(true);
 
         popupView.findViewById(R.id.delete_btn).setOnClickListener(v -> {
-            sensors.remove((Sensor) parent.getItemAtPosition(position));
+            Sensor sensor = (Sensor)  parent.getItemAtPosition(position);
+            sensors.remove(sensor);
+            dbHelper.deleteSensor(sensor.getSerialNumber());
             sensorAdapter.notifyDataSetChanged();
             popupWindow.dismiss();
         });

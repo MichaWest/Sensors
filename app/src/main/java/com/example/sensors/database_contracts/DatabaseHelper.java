@@ -89,6 +89,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(SensorReaderContract.SensorEntry.TABLE_NAME, null, values);
     }
 
+
+    public long deleteSensor(String serialNumber){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(SensorReaderContract.SensorEntry.TABLE_NAME,
+                SensorReaderContract.SensorEntry.COLUMN_NAME_SERIAL_NUMBER + " =?",
+                new String[]{serialNumber});
+    }
+
     public Cursor getSensorsForField(String fieldName) {
         SQLiteDatabase db = this.getReadableDatabase();
 
