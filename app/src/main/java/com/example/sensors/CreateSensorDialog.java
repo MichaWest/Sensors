@@ -56,7 +56,7 @@ public class CreateSensorDialog extends Dialog {
         btnConfirm.setOnClickListener(view -> {
             if(listener != null){
                 String serialNum = serialNumber.getText().toString();
-                listener.onConfirmClicked(serialNum, 59.926557, 30.336916);
+                listener.onConfirmClicked(serialNum, selectedLat, selectedLng);
             }
             dismiss();
         });

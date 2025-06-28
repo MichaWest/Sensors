@@ -32,7 +32,7 @@ public class MapListPageActivity extends AppCompatActivity {
     private ListView listOfMap;
     private ArrayList<Field> fields;
     private FieldAdapter fieldAdapter;
-    private DatabaseHelper dbHelper;;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +128,7 @@ public class MapListPageActivity extends AppCompatActivity {
                 newField.setCultureOfCultivation(filedCulture);
                 newField.setTypeOfSoil(nameSoilType);
                 fields.add(newField);
+                fieldAdapter.notifyDataSetChanged();
             }
 
             @Override

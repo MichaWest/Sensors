@@ -1,6 +1,7 @@
 package com.example.sensors;
 
 import android.content.Intent;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -12,17 +13,22 @@ import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.IconStyle;
 import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.Map;
+import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.runtime.image.ImageProvider;
 
 import java.text.DecimalFormat;
 
 public class GetCoordinatesFieldActivity extends AppCompatActivity {
-    private double selectedLat = 59.945933;
-    private double selectedLng = 30.320045;
+    private double selectedLat = 59.927434;
+    private double selectedLng = 30.341682;
+    private PlacemarkMapObject currentMarker;
     private MapView mapView;
-    static final Point DEFAULT_POINT = new Point(59.945933, 30.320045);
+    static final Point DEFAULT_POINT = new Point(59.927434, 30.341682);
 
 
     @Override
@@ -46,17 +52,23 @@ public class GetCoordinatesFieldActivity extends AppCompatActivity {
         mapView.getMapWindow().getMap().addInputListener(new InputListener() {
             @Override
             public void onMapTap(@NonNull Map map, @NonNull Point point) {
-                //handlePointSelection(point);
+                handlePointSelection(point);
             }
 
             @Override
             public void onMapLongTap(@NonNull Map map, @NonNull Point point) {
-                handlePointSelection(point);
+                //handlePointSelection(point);
             }
         });
     }
 
     private void handlePointSelection(Point point){
+        if (currentMarker != null) {
+            mapView.getMapWindow().getMap().getMapObjects().remove(currentMarker);
+        }
+
+        currentMarker = getPlacemark(point);
+
         selectedLat = point.getLatitude();
         selectedLng = point.getLongitude();
 
@@ -65,6 +77,21 @@ public class GetCoordinatesFieldActivity extends AppCompatActivity {
         DecimalFormat decimalFormat = new DecimalFormat("#.######");
         String res = decimalFormat.format(selectedLat)+", "+decimalFormat.format(selectedLng);
         cordText.setText(res);
+    }
+
+    private PlacemarkMapObject getPlacemark(Point point){
+        PlacemarkMapObject placemark = mapView.getMapWindow().getMap().getMapObjects().addPlacemark();
+        placemark.setGeometry(point);
+        placemark.setOpacity(1);
+        placemark.setIcon(ImageProvider.fromResource(this, R.drawable.sensor_icon_png));
+
+        IconStyle iconStyle = new IconStyle();
+        iconStyle.setAnchor(new PointF(0.5f, 1.0f)); // Точка привязки (центр по X, низ по Y)
+        iconStyle.setScale(0.75f);
+
+        placemark.setIconStyle(iconStyle);
+
+        return placemark;
     }
 
 

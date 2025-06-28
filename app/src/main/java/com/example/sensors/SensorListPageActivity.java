@@ -121,10 +121,12 @@ public class SensorListPageActivity extends AppCompatActivity {
             @Override
             public void onConfirmClicked(String serialNumber, double latitude, double longitude) {
                 long res = dbHelper.addSensor(serialNumber, latitude, longitude, true, 0, 0, 0, fieldName);
+
                 Sensor newSensor = new Sensor(serialNumber);
                 newSensor.setLatitude(latitude);
                 newSensor.setLongitude(longitude);
                 sensors.add(newSensor);
+                sensorAdapter.notifyDataSetChanged();
             }
 
             @Override

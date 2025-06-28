@@ -1,6 +1,7 @@
 package com.example.sensors;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sensors.database_contracts.DatabaseHelper;
+import com.example.sensors.database_contracts.SensorReaderContract;
+import com.example.sensors.objects.Field;
+import com.example.sensors.objects.Sensor;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Circle;
@@ -23,11 +28,13 @@ import com.yandex.runtime.image.ImageProvider;
 import java.util.ArrayList;
 
 public class MapActivity extends AppCompatActivity {
-    static final Point DEFAULT_POINT = new Point(59.945933, 30.320045);
+    static final Point DEFAULT_POINT = new Point(59.927434, 30.341682);
+
     private MapView mapView;
     private View gradientOverlay;
+    private DatabaseHelper dbHelper;
 
-    private ArrayList<Point> sensors = new ArrayList<>();
+    private ArrayList<Sensor> sensors = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,7 @@ public class MapActivity extends AppCompatActivity {
         mapView = findViewById(R.id.map_view);
 
         mapView.getMap().move(new CameraPosition(
-                        new Point(59.92668, 30.33845), 17.0f, 0.0f, 0.0f),
+                        DEFAULT_POINT, 17.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 0),
                 null);
 
@@ -55,18 +62,15 @@ public class MapActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Значки сенсора
-        double[][] coords = new double[][] {{59.927362, 30.337506}, {59.926205, 30.342234}, {59.926382, 30.342552}, {59.928542, 30.341957}};
 
-        for(int i=0; i< coords.length; i++){
-            sensors.add(new Point(coords[i][0], coords[i][1]));
-        }
+        dbHelper = new DatabaseHelper(this);
+        sensors = getAllSensor();
 
-        for(Point sensor: sensors){
+        for(Sensor sensor: sensors){
             addSensorToMap(sensor);
         }
 
-        for(Point sensor: sensors){
+        for(Sensor sensor: sensors){
             drawGradientCircle(sensor, 50);
         }
 
@@ -86,7 +90,36 @@ public class MapActivity extends AppCompatActivity {
         mapView.onStart();
     }
 
-    private void addSensorToMap(Point point){
+    private ArrayList<Sensor> getAllSensor(){
+        ArrayList<Sensor> sensors = new ArrayList<>();
+
+        Cursor sensorCursor = dbHelper.getAllSensor();
+
+        if(sensorCursor != null && sensorCursor.moveToFirst()){
+            int sensorSerialNumber = sensorCursor.getColumnIndex(SensorReaderContract.SensorEntry.COLUMN_NAME_SERIAL_NUMBER);
+            int sensorLatitude = sensorCursor.getColumnIndex(SensorReaderContract.SensorEntry.COLUMN_NAME_LATITUDE);
+            int sensorLongitude = sensorCursor.getColumnIndex(SensorReaderContract.SensorEntry.COLUMN_NAME_LONGITUDE);
+
+            do {
+                String serialNumber = sensorCursor.getString(sensorSerialNumber);
+                double latitude = sensorCursor.getDouble(sensorLatitude);
+                double longitude = sensorCursor.getDouble(sensorLongitude);
+
+                Sensor sensor = new Sensor(serialNumber);
+                sensor.setLongitude(longitude);
+                sensor.setLatitude(latitude);
+
+                sensors.add(sensor);
+            } while (sensorCursor.moveToNext());
+
+            sensorCursor.close();
+        }
+
+        return sensors;
+    }
+
+    private void addSensorToMap(Sensor sensor){
+        Point point = new Point(sensor.getLatitude(), sensor.getLongitude());
         PlacemarkMapObject placemark = mapView.getMapWindow().getMap().getMapObjects().addPlacemark();
         placemark.setGeometry(point);
         placemark.setOpacity(1);
@@ -99,7 +132,8 @@ public class MapActivity extends AppCompatActivity {
         placemark.setIconStyle(iconStyle);
     }
 
-    private void drawGradientCircle(Point point, int radius){
+    private void drawGradientCircle(Sensor sensor, int radius){
+        Point point = new Point(sensor.getLatitude(),sensor.getLongitude());
         CircleMapObject circle = mapView.getMapWindow().getMap().getMapObjects().addCircle(new Circle(point, radius));
         circle.setFillColor(hexToColor("9FB8B8"));
         circle.setStrokeColor(0);
