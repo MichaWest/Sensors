@@ -43,33 +43,15 @@ public class MapActivity extends AppCompatActivity {
         MapKitFactory.initialize(this);
 
         setContentView(R.layout.activity_main);
-        mapView = findViewById(R.id.map_view);
 
-        mapView.getMap().move(new CameraPosition(
-                        DEFAULT_POINT, 17.0f, 0.0f, 0.0f),
-                new Animation(Animation.Type.SMOOTH, 0),
-                null);
-
-        final ImageButton accountButton = findViewById(R.id.main__btn_account);
-        accountButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MapActivity.this, AccountActivity.class);
-            startActivity(intent);
-        });
-
-        final ImageButton listButton = findViewById(R.id.main__btn_list);
-        listButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MapActivity.this, MapListPageActivity.class);
-            startActivity(intent);
-        });
-
+        registerViews();
 
         dbHelper = new DatabaseHelper(this);
-        sensors = getAllSensor();
 
+        sensors = getAllSensor();
         for(Sensor sensor: sensors){
             addSensorToMap(sensor);
         }
-
         for(Sensor sensor: sensors){
             drawGradientCircle(sensor, 50);
         }
@@ -88,6 +70,26 @@ public class MapActivity extends AppCompatActivity {
         super.onStart();
         MapKitFactory.getInstance().onStart();
         mapView.onStart();
+    }
+
+    private void registerViews(){
+        mapView = findViewById(R.id.map_view);
+        mapView.getMap().move(new CameraPosition(
+                        DEFAULT_POINT, 17.0f, 0.0f, 0.0f),
+                new Animation(Animation.Type.SMOOTH, 0),
+                null);
+
+        final ImageButton accountButton = findViewById(R.id.main__btn_account);
+        accountButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MapActivity.this, AccountActivity.class);
+            startActivity(intent);
+        });
+
+        final ImageButton listButton = findViewById(R.id.main__btn_list);
+        listButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MapActivity.this, MapListPageActivity.class);
+            startActivity(intent);
+        });
     }
 
     private ArrayList<Sensor> getAllSensor(){

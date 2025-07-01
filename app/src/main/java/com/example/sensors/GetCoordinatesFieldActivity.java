@@ -12,11 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.layers.GeoObjectTapEvent;
+import com.yandex.mapkit.layers.GeoObjectTapListener;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.IconStyle;
 import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.Map;
+import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
@@ -35,12 +39,15 @@ public class GetCoordinatesFieldActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_coordinates_field);
+        registerViews();
+    }
 
+    private void registerViews(){
         MapKitFactory.initialize(this);
-        mapView = findViewById(R.id.map_view);
+        mapView = findViewById(R.id.get_cord_map_view);
 
         mapView.getMap().move(new CameraPosition(DEFAULT_POINT, 17.0f, 0.0f, 0.0f),
-        new Animation(Animation.Type.SMOOTH, 0), null);
+                new Animation(Animation.Type.SMOOTH, 0), null);
 
         ImageButton btnConfirm = findViewById(R.id.confirm_button);
         btnConfirm.setOnClickListener(v -> returnLocation());
@@ -61,6 +68,7 @@ public class GetCoordinatesFieldActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void handlePointSelection(Point point){
         if (currentMarker != null) {

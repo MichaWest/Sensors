@@ -40,9 +40,23 @@ public class MapListPageActivity extends AppCompatActivity {
         setContentView(R.layout.map_list_page);
 
         dbHelper = new DatabaseHelper(this);
-
         fields = getAllField();
 
+        registerViews();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
+    }
+
+    private void registerViews(){
         listOfMap = findViewById(R.id.map_list_view);
         fieldAdapter = new FieldAdapter(this, fields);
         listOfMap.setAdapter(fieldAdapter);
@@ -72,20 +86,7 @@ public class MapListPageActivity extends AppCompatActivity {
 
         ConstraintLayout sort = findViewById(R.id.clickable_sort_icon_area);
         sort.setOnClickListener(v -> showSortDialog());
-
     }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        dbHelper.close();
-        super.onDestroy();
-    }
-
     private boolean showDeleteMenu(View anchorView, int position, AdapterView parent) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.map_list_popup_menu, null);
@@ -115,7 +116,6 @@ public class MapListPageActivity extends AppCompatActivity {
     private void showSortDialog(){
 
     }
-
     private void showFilterDialog(){
 
     }
@@ -139,7 +139,6 @@ public class MapListPageActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
     private ArrayList<Field> getAllField() {
         ArrayList<Field> fields = new ArrayList<>();
 
@@ -170,17 +169,14 @@ public class MapListPageActivity extends AppCompatActivity {
 
         return fields;
     }
-
     private void goToAccountPage(){
         Intent intent = new Intent(MapListPageActivity.this, AccountActivity.class);
         startActivity(intent);
     }
-
     private void goToMapPage(){
         Intent intent = new Intent(MapListPageActivity.this, MapActivity.class);
         startActivity(intent);
     }
-
     private void goToSensorListPage(AdapterView parent, View view, int position, long id){
         Field item = (Field) parent.getItemAtPosition(position);
 

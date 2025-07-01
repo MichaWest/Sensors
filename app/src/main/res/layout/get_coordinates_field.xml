@@ -11,7 +11,7 @@
     tools:context=".GetCoordinatesFieldActivity">
 
     <com.yandex.mapkit.mapview.MapView
-        android:id="@+id/map_view"
+        android:id="@+id/get_cord_map_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 

@@ -14,6 +14,10 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account);
 
+        registerViews();
+    }
+
+    private void registerViews(){
         final ImageButton mapButton = findViewById(R.id.account__btn_map);
         mapButton.setOnClickListener(view -> {
             Intent intent = new Intent(AccountActivity.this, MapActivity.class);

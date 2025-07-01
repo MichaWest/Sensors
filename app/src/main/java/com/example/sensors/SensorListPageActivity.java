@@ -48,9 +48,12 @@ public class SensorListPageActivity extends AppCompatActivity {
         fieldName = arguments.get("Field name").toString();
 
         dbHelper = new DatabaseHelper(this);
-
         sensors = getAllSensor();
 
+        registerViews();
+    }
+
+    private void registerViews(){
         listOfSensor = findViewById(R.id.sensor_list_view);
         sensorAdapter = new SensorAdapter(this, sensors);
         listOfSensor.setAdapter(sensorAdapter);
@@ -86,7 +89,6 @@ public class SensorListPageActivity extends AppCompatActivity {
         sort.setOnClickListener(v -> {
             showSortDialog();
         });
-
     }
 
     private void showFilterDialog(){
