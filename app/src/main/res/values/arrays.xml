@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="soil_types_array">
+        <item>Чернозем</item>
+        <item>Глинистая</item>
+        <item>Песчаная</item>
+        <item>Суглинистая</item>
+        <item>Торфяная</item>
+    </string-array>
+
+    <string-array name="culture_array">
+        <item>Пшеница</item>
+        <item>Кукуруза</item>
+        <item>Соя</item>
+        <item>Подсолнечник</item>
+        <item>Картофель</item>
+        <item>Овощи</item>
+        <item>Фрукты</item>
+    </string-array>
+</resources>

@@ -26,7 +26,7 @@ public class AccountActivity extends AppCompatActivity {
 
         final ImageButton listButton = findViewById(R.id.account__btn_list);
         listButton.setOnClickListener(view -> {
-            Intent intent = new Intent(AccountActivity.this, MapListPageActivity.class);
+            Intent intent = new Intent(AccountActivity.this, FieldListPageActivity.class);
             startActivity(intent);
         });
     }

@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Метод для работы с полями
-   public long addField(String name, String culture, String soil_type){
+   public long addField(String name, String soil_type, String culture){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 

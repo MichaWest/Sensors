@@ -28,7 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapListPageActivity extends AppCompatActivity {
+public class FieldListPageActivity extends AppCompatActivity implements FieldInputDialogFragment.FieldInputDialogListener {
     private ListView listOfMap;
     private ArrayList<Field> fields;
     private FieldAdapter fieldAdapter;
@@ -87,6 +87,7 @@ public class MapListPageActivity extends AppCompatActivity {
         ConstraintLayout sort = findViewById(R.id.clickable_sort_icon_area);
         sort.setOnClickListener(v -> showSortDialog());
     }
+
     private boolean showDeleteMenu(View anchorView, int position, AdapterView parent) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.map_list_popup_menu, null);
@@ -113,32 +114,21 @@ public class MapListPageActivity extends AppCompatActivity {
         popupWindow.showAsDropDown(anchorView);
         return true;
     }
+
     private void showSortDialog(){
 
     }
+
     private void showFilterDialog(){
 
     }
+
     private void showAddItemDialog(){
-        CreateFieldDialog dialog = new CreateFieldDialog(this, new CreateFieldDialog.CustomDialogListener() {
-            @Override
-            public void onConfirmClicked(String name, String filedCulture, String nameSoilType) {
-                long res = dbHelper.addField(name, filedCulture, nameSoilType);
-                Field newField = new Field(name);
-                newField.setCultureOfCultivation(filedCulture);
-                newField.setTypeOfSoil(nameSoilType);
-                fields.add(newField);
-                fieldAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelClicked() {
-                // На будущее
-            }
-        });
-
-        dialog.show();
+        FieldInputDialogFragment dialog = new FieldInputDialogFragment();
+        dialog.setCustomDialogListener(this);
+        dialog.show(getSupportFragmentManager(), "FieldInputDialog");
     }
+
     private ArrayList<Field> getAllField() {
         ArrayList<Field> fields = new ArrayList<>();
 
@@ -169,21 +159,41 @@ public class MapListPageActivity extends AppCompatActivity {
 
         return fields;
     }
+
     private void goToAccountPage(){
-        Intent intent = new Intent(MapListPageActivity.this, AccountActivity.class);
+        Intent intent = new Intent(FieldListPageActivity.this, AccountActivity.class);
         startActivity(intent);
     }
+
     private void goToMapPage(){
-        Intent intent = new Intent(MapListPageActivity.this, MapActivity.class);
+        Intent intent = new Intent(FieldListPageActivity.this, MapActivity.class);
         startActivity(intent);
     }
+
     private void goToSensorListPage(AdapterView parent, View view, int position, long id){
         Field item = (Field) parent.getItemAtPosition(position);
 
-        Intent intent = new Intent(MapListPageActivity.this, SensorListPageActivity.class);
+        Intent intent = new Intent(FieldListPageActivity.this, SensorListPageActivity.class);
         intent.putExtra("Field name", item.getFieldName());
         startActivity(intent);
     }
+
+    @Override
+    public void onFieldDataSubmitted(String fieldName, String soilType, String crop) {
+        // Обработка введеных данных
+        long res = dbHelper.addField(fieldName, soilType, crop);
+        Field newField = new Field(fieldName);
+        newField.setCultureOfCultivation(crop);
+        newField.setTypeOfSoil(soilType);
+        fields.add(newField);
+        fieldAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCancelClicked() {
+
+    }
+
     public class FieldAdapter extends ArrayAdapter<Field>{
         private List<Field> items;
         private final Context context;

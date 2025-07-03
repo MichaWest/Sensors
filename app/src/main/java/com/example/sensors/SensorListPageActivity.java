@@ -23,7 +23,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.sensors.database_contracts.DatabaseHelper;
 import com.example.sensors.database_contracts.SensorReaderContract;
-import com.example.sensors.objects.Field;
 import com.example.sensors.objects.Sensor;
 
 import java.util.ArrayList;
@@ -146,7 +145,7 @@ public class SensorListPageActivity extends AppCompatActivity {
     }
 
     private void goToMapListPage(){
-        Intent intent = new Intent(SensorListPageActivity.this, MapListPageActivity.class);
+        Intent intent = new Intent(SensorListPageActivity.this, FieldListPageActivity.class);
         startActivity(intent);
     }
 

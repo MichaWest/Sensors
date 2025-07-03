@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensors.database_contracts.DatabaseHelper;
 import com.example.sensors.database_contracts.SensorReaderContract;
-import com.example.sensors.objects.Field;
 import com.example.sensors.objects.Sensor;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
@@ -87,7 +86,7 @@ public class MapActivity extends AppCompatActivity {
 
         final ImageButton listButton = findViewById(R.id.main__btn_list);
         listButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MapActivity.this, MapListPageActivity.class);
+            Intent intent = new Intent(MapActivity.this, FieldListPageActivity.class);
             startActivity(intent);
         });
     }

@@ -40,36 +40,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/map_dialog__title"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/input_culture"
+        app:layout_constraintBottom_toTopOf="@id/soil_type_spinner"
 
         android:layout_marginBottom="16dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp" />
 
-    <EditText
-        android:id="@+id/input_culture"
-
-        android:layout_width="332dp"
-        android:layout_height="40dp"
-
-        android:hint="Культура выращивания"
-        android:fontFamily="@font/nunito_light"
-        android:textSize="14dp"
-        android:textColorHint="@color/hint_text"
-        android:textColor="@color/black_outline"
-        android:background="@drawable/input_background"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_field_name"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/input_soil_type"
-
-        android:layout_marginBottom="16dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp" />
-
-    <EditText
-        android:id="@+id/input_soil_type"
+    <Spinner
+        android:id="@+id/soil_type_spinner"
 
         android:layout_width="332dp"
         android:layout_height="40dp"
@@ -82,9 +60,27 @@
         android:background="@drawable/input_background"
 
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_culture"
+        app:layout_constraintTop_toBottomOf="@id/input_field_name"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/culture_spinner"
+
+        android:layout_marginBottom="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp" />
+
+    <Spinner
+        android:id="@+id/culture_spinner"
+
+        android:layout_width="332dp"
+        android:layout_height="40dp"
+
+        android:background="@drawable/input_background"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/soil_type_spinner"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/cancel_button"
+
 
         android:layout_marginBottom="16dp"
         android:paddingStart="8dp"
@@ -100,20 +96,19 @@
 
         android:background="@drawable/cancel_button"
 
-
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
     </ImageButton>
 
     <ImageButton
-        android:id="@+id/ok_button"
+        android:id="@+id/submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="16dp"
 
-        android:background="@drawable/ok_button"
+        android:background="@drawable/ok_button_selector"
 
 
         app:layout_constraintRight_toRightOf="parent"
