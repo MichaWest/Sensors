@@ -71,7 +71,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    public boolean fieldExists(String fieldName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean res = false;
 
+        String[] columns = {
+                FieldReaderContract.FieldEntry.COLUMN_NAME_FIELD_NAME
+        };
+
+        String[] selectionArgs = {
+                fieldName
+        };
+
+        Cursor cursor = db.query(
+                FieldReaderContract.FieldEntry.TABLE_NAME,
+                columns,
+                FieldReaderContract.FieldEntry.COLUMN_NAME_FIELD_NAME + "=?",
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor.getCount() > 0) res = true;
+
+        return res;
+    }
 
     // Методы для работы с сенсорами
     public long addSensor(String serialNumber, double latitude, double longitude,
